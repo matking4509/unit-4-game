@@ -1,5 +1,13 @@
 // Toggle console.logs for debugging.
 var debugLogs = true;
+function debugPrint(label, output) {
+    if (debugLogs) {
+        console.log(label, output);
+    }
+};
+
+debugPrint("test", "thing");
+debugPrint("debugLogs on?", debugLogs);
 
 // Define Dictionary Object 
 var crystalObj = {
