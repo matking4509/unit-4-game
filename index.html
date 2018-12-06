@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en-us">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
+    <link rel="stylesheet" type="text/css" href="./assets/css/style.css">
+    <link href="https://fonts.googleapis.com/css?family=Wire+One" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title>Crystal Guess</title>
+    <style>
+     /* A tag to remove the card border */
+     .card {
+      border: none;
+     }
+     </style>
+  </head>
+
+  <body>
+    <div class="container">
+        <div class="row">
+            <div class="col-12 border text-center wirefont">
+            <h1>- Magic Crystal -</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div id="instruct" class="wirefont align-middle col-12 text-center border">
+            <p>Each crystal below is work an uknown number of energy points.  You must continue to select crystals until you reach the target number of points and win, or go over the target and lose!</p>
+            <p>The challenge is you do not know how much each crystal is worth at the start.</p>
+            <p>Your target number is: <span id="target-num">XX</span> Current Record: <span id="wins">WINS</span> wins and <span id="loss">LOSS</span> lost.</p>
+            </div>
+        </div>
+        <div class="row">
+            <div id="box-1" class="col align-middle text-center border">
+                <div id="crystal-1" class="card">
+                    <img src="./assets/images/Crystal-1.png" height=75%>
+                </div>
+            </div>
+            <div id="box-2" class="col align-middle text-center border">
+                <div id="crystal-2" class="card">
+                    <img src="./assets/images/Crystal-2.png" height=75%>
+                </div>
+            </div>
+            <div id="box-3" class="col align-middle text-center border">
+                <div id="crystal-3" class="card">
+                    <img src="./assets/images/Crystal-3.png" height=75%>
+                </div>
+            </div>
+            <div id="box-4" class="col align-middle text-center border">
+                <div id="crystal-4" class="card">
+                    <img src="./assets/images/Crystal-4.png" height=75%>
+                </div>
+            </div>
+        </div>  
+        <div class="row">
+            <div id="score" class="col text-center">
+                <h2>Current Energy Points: <span id="current-score">00</span> Target Energy Points: <span id="target-score">00</span></h2>
+            </div>
+        </div>
+    </div>
+
+    <script type="text/javascript" src="assets/javascript/game.js"></script>    
+    <script>
+
+    </script>
+  
+</body>
+
+</html>
