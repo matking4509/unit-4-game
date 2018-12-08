@@ -1,23 +1,24 @@
 
 // Toggle console.logs for debugging, and write debug function.
-var debugLogs = true;
+var debugLogs = false;
 var debugPrint = function(label, output) {
     if (debugLogs) {
         console.log("dbg - ", label, output);
     }
 };
 
-// Define Crystal Dictionary Object 
-var nameAry = ["Earth","Wind","Fire","Water"];
+// Define Crystal Dictionary Object options. 
+// curCrystalObj built from these values.  Only 0-3 will ever be used after Shuffle.
+var nameAry = ["Earth","Wind","Fire","Water"];  // Decided not to use, but left in for future functionality.
 var imageAry = ["Crystal-1.png","Crystal-2.png","Crystal-3.png","Crystal-4.png"];
-var pointAry = [25, 20, 15, 10, 5, 2, 1];
+var pointAry = [25, 20, 15, 10, 5, 2, 1]; // 7 options, but will only use first 4, after shuffle.
 
 //Placeholder for current values.  Populated at runtime.
 var curCrystalObj = {}; // Placeholder for scrambled Cystal Object
 var gameAdv = false; // Flag to use limited guesses 
 var guessCnt = 0; // Total Number of Guesses per game
-var pointRecordAry = []; // Blank Array to hold Point Selections
-var curScore = 0;
+var pointRecordAry = []; // Blank Array to hold Point Selections Not Nessecary, but wanted an internal record of guesses.
+var curScore = 0; // Current Score to determine win.
 var targetNumber = 0; // Placeholder for Target Points
 var gameOver = false; // Flag to note eng of game.
 var winCnt = 0; // Count of wins
@@ -50,23 +51,42 @@ function chooseTarget() {
     debugPrint("TargetNumber: ", targetNumber);
 }
 
+function startGame() {
+    debugPrint("Game Started"); 
+    curCrystalObj = {}; // Placeholder for scrambled Cystal Object
+    gameAdv = false; // Flag to use limited guesses 
+    guessCnt = 0; // Total Number of Guesses per game
+    pointRecordAry = []; // Blank Array to hold Point Selections
+    curScore = 0;
+    targetNumber = 0; // Placeholder for Target Points
+    if (gameOver == false) {
+        main();
+    } else {
+        $(".row").on("click", function() {
+            debugPrint("NewGameClick");
+            gameOver = false;
+            startGame();
+        });  
+    }
+}
+
 function main() {
-    scrambleCrystals();
-    chooseTarget();
-    writeScreen();
-    
-    $(".imgBtn").on("click", function() {
-        debugPrint("Points: ", curCrystalObj.point[this.id]);
-        pointRecordAry.push(curCrystalObj.point[this.id]);
-        debugPrint("guesses: ", pointRecordAry);
-        curScore = getCurrentScore(pointRecordAry);
-        writeScore(curScore, targetNumber);
-        checkWinLose(curScore, targetNumber);
-    });
+        scrambleCrystals();
+        chooseTarget();
+        writeScreen();
+        $(".imgBtn").on("click", function() {
+            debugPrint("Points: ", curCrystalObj.point[this.id]);
+            pointRecordAry.push(curCrystalObj.point[this.id]);
+            debugPrint("guesses: ", pointRecordAry);
+            curScore = getCurrentScore(pointRecordAry);
+            writeScore(curScore, targetNumber);
+            checkWinLose(curScore, targetNumber);
+        });
 }
 
 function writeScreen() {
     debugPrint("writeScreenObj", this.curCrystalObj);
+    $("#crystals").replaceWith("<div id=\"crystals\" class=\"row\"></div>"); //reinstate "crystals row"
     for (var i = 0; i < this.curCrystalObj.image.length; i++) {
         var crysColDiv = $("<div>");
             crysColDiv.attr("id", "box-" + i);
@@ -83,9 +103,7 @@ function writeScreen() {
             crysCardImg.attr("height", "75%");
             crysCardImg.appendTo("#crystal-" + i);
     }
-        // <div id="score" class="col text-center">
-        //     <h2>Current Energy Points: <span id="current-score">00</span> Target Energy Points: <span id="target-score">00</span></h2>
-        // </div>
+    $("#score").replaceWith("<div id=\"score\" class=\"row\"></div>"); //reinstate "score row"
     var scoreColDiv = $("<div>");
         scoreColDiv.attr("id", "scoreDiv");
         scoreColDiv.addClass("col text-center border");
@@ -96,15 +114,12 @@ function writeScreen() {
         $(".target-num").html(targetNumber);
         $("#wins").html(winCnt);
         $("#loss").html(loseCnt);
-
-    
 }
 
 function getCurrentScore(scoreAry) {
     var currentScore = 0;
     for (var i = 0; i < scoreAry.length; i++) {
-        currentScore += scoreAry[i];
-        
+        currentScore += scoreAry[i]; 
     }
     debugPrint("Current Score", currentScore);
     return currentScore;
@@ -117,15 +132,30 @@ function writeScore(current,target) {
 
 function checkWinLose(current,target) {
     if (current > target) {
-        alert("you lose");
+        debugPrint("You've Lost!");
+        $("#crystals").replaceWith("<div id=\"crystals\" class=\"row\"></div>");
+        var loseColDiv = $("<div>");
+        loseColDiv.addClass("card mx-auto");
+        loseColDiv.attr("style","width: 50%");
+        loseColDiv.attr("id", "lose-card");
+        loseColDiv.append("<img class=\"card-img-top\" src=\"./assets/images/coalLose.png\">");
+        loseColDiv.append("<div class=\"card-body\"><h2><p class=\"card-text text-center font-weight-bold\">You Lose</p></h2></div>");
+        loseColDiv.appendTo("#crystals");
         loseCnt++;
+        gameOver=true;
+        startGame();
     } else if (current == target) {
-        alert("you win");
+        debugPrint("You've Won!");
+        $("#crystals").replaceWith("<div id=\"crystals\" class=\"row\"></div>");
+        var winColDiv = $("<div>");
+        winColDiv.addClass("card mx-auto");
+        winColDiv.attr("style","width: 50%");
+        winColDiv.attr("id", "win-card");
+        winColDiv.append("<img class=\"card-img-top\" src=\"./assets/images/diamondWin.png\">");
+        winColDiv.append("<div class=\"card-body\"><h2><p class=\"card-text text-center font-weight-bold\">You Win</p></h2></div>");
+        winColDiv.appendTo("#crystals");
         winCnt++;
+        gameOver=true;
+        startGame();
     }
 }
-//define key clicks
-// $(".crystal-image").on("click", function() {
-// $(".imgBtn").on("click", function() {
-//     debugPrint("object: ", "That");
-// });

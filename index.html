@@ -25,20 +25,23 @@
             </div>
         </div>
         <div class="row">
-            <div id="instruct" class="wirefont align-middle col-12 text-center border">
+            <div id="instruct" class="font-weight-bold align-middle col-12 text-center border">
             <p>Each crystal below is work an uknown number of energy points.  You must continue to select crystals until you reach the target number of points and win, or go over the target and lose!</p>
             <p>The challenge is you do not know how much each crystal is worth at the start.</p>
             <p>Your target number is: <span class="target-num">XX</span> Current Record: <span id="wins">WINS</span> wins and <span id="loss">LOSS</span> lost.</p>
             </div>
         </div>
         <!-- Crystals and Score are created based on jquery, after shuffle. -->
-        <div id="crystals" class="row"></div>  
+        <div id="crystals" class="row">
+            
+        </div>  
         <div id="score" class="row"></div>
     </div>
 
     <script type="text/javascript" src="assets/javascript/game.js"></script>    
     <script>
-        main();
+        
+        startGame();
     </script>
   
 </body>
