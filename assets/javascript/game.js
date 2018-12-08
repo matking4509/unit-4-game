@@ -1,6 +1,6 @@
 
 // Toggle console.logs for debugging, and write debug function.
-var debugLogs = false;
+var debugLogs = true;
 var debugPrint = function(label, output) {
     if (debugLogs) {
         console.log("dbg - ", label, output);
@@ -9,13 +9,13 @@ var debugPrint = function(label, output) {
 
 // Define Crystal Dictionary Object options. 
 // curCrystalObj built from these values.  Only 0-3 will ever be used after Shuffle.
-var nameAry = ["Earth","Wind","Fire","Water"];  // Decided not to use, but left in for future functionality.
+var nameAry = ["Earth","Wind","Fire","Water"];  // Name of Crystals (Feature not implimented yet.)
 var imageAry = ["Crystal-1.png","Crystal-2.png","Crystal-3.png","Crystal-4.png"];
 var pointAry = [25, 20, 15, 10, 5, 2, 1]; // 7 options, but will only use first 4, after shuffle.
 
 //Placeholder for current values.  Populated at runtime.
 var curCrystalObj = {}; // Placeholder for scrambled Cystal Object
-var gameAdv = false; // Flag to use limited guesses 
+var gameAdv = false; // Flag to use limited guesses (Feature Not Implimented)
 var guessCnt = 0; // Total Number of Guesses per game
 var pointRecordAry = []; // Blank Array to hold Point Selections Not Nessecary, but wanted an internal record of guesses.
 var curScore = 0; // Current Score to determine win.
@@ -24,6 +24,7 @@ var gameOver = false; // Flag to note eng of game.
 var winCnt = 0; // Count of wins
 var loseCnt = 0; // count of losses
 
+// Scramble Crystals, buy shuffleing the dictionary options, then building object.
 function scrambleCrystals() {
     // Scramble Crystal Information, and load into curCrystalObject
     curCrystalObj["name"] = shuffle(nameAry);
@@ -46,13 +47,15 @@ function scrambleCrystals() {
     debugPrint("Scrambled CurCrystalObj :", curCrystalObj);
 }
 
+// Select Target Number
 function chooseTarget() {
     targetNumber = Math.floor((Math.random()*119))+1;
     debugPrint("TargetNumber: ", targetNumber);
 }
 
+// Start Game Function to allow reset of counters/objects.
 function startGame() {
-    debugPrint("Game Started"); 
+    debugPrint("Game Started", gameOver); 
     curCrystalObj = {}; // Placeholder for scrambled Cystal Object
     gameAdv = false; // Flag to use limited guesses 
     guessCnt = 0; // Total Number of Guesses per game
@@ -62,7 +65,7 @@ function startGame() {
     if (gameOver == false) {
         main();
     } else {
-        $(".row").on("click", function() {
+        $('.row').on("click", function() {
             debugPrint("NewGameClick");
             gameOver = false;
             startGame();
@@ -70,6 +73,7 @@ function startGame() {
     }
 }
 
+// Main Game Code, to call functions.  
 function main() {
         scrambleCrystals();
         chooseTarget();
@@ -84,6 +88,7 @@ function main() {
         });
 }
 
+// Write initial Screen.
 function writeScreen() {
     debugPrint("writeScreenObj", this.curCrystalObj);
     $("#crystals").replaceWith("<div id=\"crystals\" class=\"row\"></div>"); //reinstate "crystals row"
@@ -116,6 +121,7 @@ function writeScreen() {
         $("#loss").html(loseCnt);
 }
 
+//Calculate current score from Array.  (pass in Array, return score)
 function getCurrentScore(scoreAry) {
     var currentScore = 0;
     for (var i = 0; i < scoreAry.length; i++) {
@@ -125,11 +131,13 @@ function getCurrentScore(scoreAry) {
     return currentScore;
 }
 
+// Update score on screen.
 function writeScore(current,target) {
     $("#current-score").html(current);
     $("#target-score").html(target);
 }
 
+// Check to see if win or lose condition has been reached.
 function checkWinLose(current,target) {
     if (current > target) {
         debugPrint("You've Lost!");
